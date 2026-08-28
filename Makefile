@@ -1,5 +1,5 @@
-C_SOURCES = $(wildcard libc/*.c kernel/*.c)
-HEADERS = $(wildcard libc/*.h kernel/*.h)
+C_SOURCES = $(wildcard libc/*.c kernel/*.c cpu/*.c)
+HEADERS = $(wildcard libc/*.h kernel/*.h cpu/*.h)
 # Nice syntax for file extension replacement
 OBJ = ${C_SOURCES:.c=.o}
 
@@ -41,7 +41,7 @@ debug: kernel-001
 	nasm $< -f bin -o $@
 
 clean:
-	rm libc/*.o kernel/*.o
+	rm libc/*.o kernel/*.o cpu/*.o
 
 remove-all: clean
 	rm -f kernel-001
