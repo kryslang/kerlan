@@ -1,3 +1,6 @@
+#include "../libc/kprint.h"
+
+
 void kmain(void){
 	const char *str = "my first kernel test, yaayyy!";
 	volatile char *videoptr = (char*)0xb8000; // video memory position
@@ -6,12 +9,13 @@ void kmain(void){
 
 
 	//clear screen:
-	while(j<80*25*2){
-		videoptr[j] = ' ';
-		videoptr[j+1] = 0x07; // gray on black
-		j = j + 2;
-	}
-	j = 0;
+	// while(j<80*25*2){
+	// 	videoptr[j] = ' ';
+	// 	videoptr[j+1] = 0x07; // gray on black
+	// 	j = j + 2;
+	// }
+	// j = 0;
+	kclear();
 
 	//print message:
 	while(str[j]!='\0'){
