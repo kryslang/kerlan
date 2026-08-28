@@ -1,6 +1,6 @@
 void kmain(void){
 	const char *str = "my first kernel test, yaayyy!";
-	volatile char *videoptr = (char*)0x8000; // video memory position
+	volatile char *videoptr = (char*)0xb8000; // video memory position
 	unsigned int i = 0;
 	unsigned int j = 0;
 
@@ -16,7 +16,7 @@ void kmain(void){
 	//print message:
 	while(str[j]!='\0'){
 		videoptr[i] = str[j];
-		videoptr[j+1] = 0x07; // gray on black
+		videoptr[i+1] = 0x07; // gray on black
 		j++;
 		i = i + 2;
 
