@@ -1,7 +1,7 @@
-C_SOURCES = $(wildcard libc/*.c kernel/*.c cpu/*.c)
-HEADERS = $(wildcard libc/*.h kernel/*.h cpu/*.h)
+C_SOURCES = $(wildcard libc/*.c kernel/*.c cpu/*.c drivers/*.c)
+HEADERS = $(wildcard libc/*.h kernel/*.h cpu/*.h drivers/*.h)
 # Nice syntax for file extension replacement
-OBJ = ${C_SOURCES:.c=.o}
+OBJ = ${C_SOURCES:.c=.o cpu/interrupt.o}
 
 
 
@@ -16,7 +16,8 @@ all: kernel-001
 run: kernel-001
 	qemu-system-i386 -kernel $^
 
-
+#isr.o: isr.c isr.h interrupt.asm
+#	${CC} ${CFLAGS} -ffreestanding -c $< -o $@
 # kasm.o: kernel.asm
 # 	nasm -f elf $^ -o $@
 
@@ -40,8 +41,8 @@ debug: kernel-001
 %.bin: %.asm
 	nasm $< -f bin -o $@
 
-clean:
-	rm libc/*.o kernel/*.o cpu/*.o
+clean:drivers/*.o
+	rm libc/*.o kernel/*.o cpu/*.o drivers/*.o
 
 remove-all: clean
 	rm -f kernel-001

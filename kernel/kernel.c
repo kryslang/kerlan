@@ -1,7 +1,10 @@
 #include "../libc/kprint.h"
+#include "../cpu/isr.h"
 
 
 void kmain(void){
+	isr_install();
+	irq_install();
 	s8 *str = "my first kernel test, yaayyy! I will test this so i can see how does the next line work \nalso i will test manual next line";
 	// volatile char *videoptr = (char*)0xb8000; // video memory position
 	// unsigned int i = 0;

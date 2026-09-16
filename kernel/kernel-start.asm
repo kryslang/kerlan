@@ -14,6 +14,7 @@ extern kmain	        ;kmain is defined in the c file
 
 start:
   cli 			;block interrupts
+  sti
   mov esp, stack_space	;set stack pointer
   call kmain
   hlt		 	;halt the CPU

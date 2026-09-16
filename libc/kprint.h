@@ -16,6 +16,7 @@
 #define DEF_COLOR 0x0f
 
 void kclear();
+void kprint(s8 *str);
 void kprint_at(s8 *str, u8 x, u8 y,u8 col);
 
 #endif
