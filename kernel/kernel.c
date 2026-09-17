@@ -1,5 +1,9 @@
 #include "../libc/kprint.h"
 #include "../cpu/isr.h"
+#include "../libc/string.h"
+#include "kernel.h"
+
+
 
 
 void kmain(void){
@@ -28,6 +32,15 @@ void kmain(void){
 	// 	i = i + 2;
  //
 	// }
+
 	kprint_at(str, 0, 5, 0x0f);
 	return;
 }
+
+
+void user_input(char str[]){
+	kprint("you typed: ");
+	kprint(str);
+	kprint("\n");
+}
+

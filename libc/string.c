@@ -26,3 +26,13 @@ int strlen(char str[]){
 	while(str[i] != '\0'){i++;}
 	return i;
 }
+
+void backspace(char str[]){
+	str[strlen(str) - 1] = '\0';
+}
+
+void appendchar(char str[], char s){
+	int x = strlen(str);
+	str[x] = s;
+	str[x + 1] = '\0';
+}
