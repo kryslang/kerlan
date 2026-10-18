@@ -33,6 +33,7 @@ static void keyboard_callback(registers_t regs) {
     }
     if(scancode == BACKSPACE){
         backspace(key_buffer); //todo buffer
+        print_backspace();
     } else if(scancode == ENTER){
         kprint("\n");
         user_input(key_buffer);

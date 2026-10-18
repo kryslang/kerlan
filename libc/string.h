@@ -6,6 +6,6 @@ void reverse(char str[]);
 int strlen(char str[]);
 void backspace(char str[]);
 void appendchar(char str[], char s);
-
+int strcmp(char str[], char str2[]);
 
 #endif

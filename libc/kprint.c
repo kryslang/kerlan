@@ -1,9 +1,11 @@
 
 #include "kprint.h"
+#include "mem.h"
+#include "../cpu/types.h"
 #include "../cpu/ports.h"
 
 
-void kprint_char_at(u8 str, u8 x, u8 y, u8 col);
+int kprint_char_at(u8 str, u8 x, u8 y, u8 col);
 int get_cursor_offset();
 void set_cursor_offset(int offset);
 
@@ -26,12 +28,14 @@ void kclear(){
 void kprint_at(s8 *str, u8 x, u8 y,u8 col){
 
 	u8 i = 0;
+	u16 off = 0;
 
 
 	while(str[i]!='\0'){
 		if(x>=MAX_COLS){
 			x = 0;
 			y++;
+
 
 		}
 		if(str[i]=='\n'){
@@ -40,7 +44,9 @@ void kprint_at(s8 *str, u8 x, u8 y,u8 col){
 			i++;
 			continue;
 		}
-		kprint_char_at(str[i], x, y, col);
+		off = kprint_char_at(str[i], x, y, col);
+		x = off % 80;
+		y = (off - x) / 80;
 		x++;
 
 		i++;
@@ -49,6 +55,19 @@ void kprint_at(s8 *str, u8 x, u8 y,u8 col){
 
 }
 
+
+
+
+void print_backspace(){
+	u16 off = (get_cursor_offset() / 2) - 1;
+	u8 x = off % 80;
+	u8 y = (off - x) / 80;
+
+	off = kprint_char_at(' ', x,  y, DEF_COLOR);
+	set_cursor_offset(off*2);
+}
+
+
 void kprint(s8 *str){
 	u16 off = get_cursor_offset() / 2;
 	u8 x = off % 80;
@@ -56,19 +75,26 @@ void kprint(s8 *str){
 
 	kprint_at(str, x,  y, DEF_COLOR);
 
+
 }
 
 
 
 
 //private
-void kprint_char_at(u8 str, u8 x, u8 y, u8 col){
+int kprint_char_at(u8 str, u8 x, u8 y, u8 col){
 	u8 *vidptr = (u8*)VIDEO_MEM;
 	u16 pos = (x + (y * 80)) * 2;
+	while(pos > 80*25*2){
+		memcpy((u32*)(VIDEO_MEM + 80*2), (u32*)VIDEO_MEM, 80*24*2);
+		pos -= 80*2;
+	}
 	vidptr[pos] = str;
 	vidptr[pos+1] = col;
-
+	return (u16)pos/2;
 }
+
+
 
 
 

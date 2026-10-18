@@ -22,7 +22,7 @@ void kmain(void){
 	// 	j = j + 2;
 	// }
 	// j = 0;
-	kclear();
+	//kclear();
 
 	//print message:
 	// while(str[j]!='\0'){
@@ -34,13 +34,20 @@ void kmain(void){
 	// }
 
 	kprint_at(str, 0, 5, 0x0f);
-	return;
+	while(1){
+
+	}
+
 }
 
 
 void user_input(char str[]){
+	if(strcmp(str, "CLEAR") == 0){
+		kclear();
+	}
 	kprint("you typed: ");
 	kprint(str);
-	kprint("\n");
+	kprint("\n> ");
+	return;
 }
 

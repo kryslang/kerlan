@@ -36,3 +36,21 @@ void appendchar(char str[], char s){
 	str[x] = s;
 	str[x + 1] = '\0';
 }
+
+int strcmp(char str[], char str2[]){
+	int n1 = strlen(str);
+	int n2 = strlen(str2);
+	int is = 0;
+	int i;
+	if(n1 == n2){
+		for(i = 0; i <= n1; i++){
+			if(str[i] != str2[i]){
+				is = 1;
+			}
+		}
+	} else {
+		is = 1;
+	}
+	return is;
+
+}
