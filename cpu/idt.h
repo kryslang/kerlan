@@ -4,7 +4,7 @@
 #include "types.h"
 
 /* Segment selectors */
-#define KERNEL_CS 0x08
+#define KERNEL_CS 0x10
 
 /* How every interrupt gate (handler) is defined */
 typedef struct {

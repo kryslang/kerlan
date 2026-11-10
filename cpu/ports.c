@@ -13,23 +13,36 @@ u8 port_byte_in (u16 port) {
      *
      * Inputs and outputs are separated by colons
      */
-    __asm__("in %%dx, %%al" : "=a" (result) : "d" (port));
+    __asm__("inb %%dx, %%al" : "=a" (result) : "d" (port));
     return result;
 }
 
 void port_byte_out (u16 port, u8 data) {
     /* Notice how here both registers are mapped to C variables and
-     * nothing is returned, thus, no equals '=' in the asm syntax 
+     * nothing is returned, thus, no equals '=' in the asm syntax
      * However we see a comma since there are two variables in the input area
      * and none in the 'return' area
      */
-    __asm__ __volatile__("out %%al, %%dx" : : "a" (data), "d" (port));
+    __asm__ __volatile__("outb %%al, %%dx" : : "a" (data), "d" (port));
 }
 
 u16 port_word_in (u16 port) {
     u16 result;
-    __asm__("in %%dx, %%ax" : "=a" (result) : "d" (port));
+    __asm__ __volatile__("inw %%dx, %%ax" : "=a" (result) : "d" (port));
     return result;
+}
+
+void port_word_read(u16 port, void* addr, u32 count) {
+    __asm__ __volatile__("cld; rep insw"
+    : "+D"(addr), "+c"(count)
+    : "d"(port)
+    : "memory");
+}
+void port_word_write(u16 port, const void* addr, u32 count) {
+    __asm__ __volatile__("cld; rep outsw"
+    : "+S"(addr), "+c"(count)
+    : "d"(port)
+    : "memory");
 }
 
 void port_word_out (u16 port, u16 data) {
