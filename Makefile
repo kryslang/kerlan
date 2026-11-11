@@ -97,5 +97,5 @@ debug: os-image.iso hdd.img
 	nasm $< -f bin -o $@
 
 clean:
-	rm -f libc/*.o kernel/*.o cpu/*.o drivers/*.o kernel-001 os-image.iso hdd.img
+	rm -f libc/*.o kernel/*.o cpu/*.o drivers/*.o kernel-001 os-image.iso hdd.img qemu.log
 	rm -rf iso_root
