@@ -61,29 +61,29 @@ GDB = /usr/local/i386elfgcc/bin/i386-elf-gdb
 CFLAGS = -g -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs \
 		 -Wall -Wextra -Werror
 
-all: os-image.iso hdd.img
+all: kerlan.iso hdd.img
 	@echo "Sestavení dokončeno!"
 
 # Spuštění kernelu s CD (GRUB + Kernel) a připojeným pevným diskem (hdd.img)
-run: os-image.iso hdd.img
-	qemu-system-i386 -drive format=raw,file=hdd.img,media=disk,index=0 -drive format=raw,file=os-image.iso,media=cdrom,index=2 -boot d -d int,cpu_reset -D qemu.log -no-reboot
+run: kerlan.iso hdd.img
+	qemu-system-i386 -drive format=raw,file=hdd.img,media=disk,index=0 -drive format=raw,file=$<,media=cdrom,index=2 -boot d -d int,cpu_reset -D qemu.log -no-reboot
 
 kernel-001: kernel/kernel-start.o ${OBJ}
 	i386-elf-ld -T link.ld -o $@ $^
 
 # Zabalení GRUBu a kernelu do bootovatelného ISO obrazu
-os-image.iso: kernel-001
+kerlan.iso: kernel-001
 	mkdir -p iso_root/boot/grub
 	cp kernel-001 iso_root/boot/
 	@echo 'menuentry "My OS" { multiboot /boot/kernel-001; boot }' > iso_root/boot/grub/grub.cfg
-	grub-mkrescue -o os-image.iso iso_root
+	grub-mkrescue -o $@ iso_root
 
 # Vytvoření čistého 32MB FAT16 virtuálního pevného disku
 hdd.img:
 	dd if=/dev/zero of=hdd.img bs=1M count=32
 	#mkfs.vfat -F 16 hdd.img
 
-debug: os-image.iso hdd.img
+debug: kerlan.iso hdd.img
 	qemu-system-i386 -s -S -drive format=raw,file=hdd.img,media=disk,index=0 -drive format=raw,file=os-image.iso,media=cdrom,index=2 -boot d -d int,cpu_reset -D qemu.log -no-reboot &
 	${GDB} -ex "target remote localhost:1234" -ex "symbol-file kernel-001"
 
@@ -97,5 +97,5 @@ debug: os-image.iso hdd.img
 	nasm $< -f bin -o $@
 
 clean:
-	rm -f libc/*.o kernel/*.o cpu/*.o drivers/*.o kernel-001 os-image.iso hdd.img qemu.log
+	rm -f libc/*.o kernel/*.o cpu/*.o drivers/*.o kernel-001 kerlan.iso hdd.img qemu.log
 	rm -rf iso_root
