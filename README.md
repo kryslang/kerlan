@@ -51,6 +51,16 @@ make run    # boot in QEMU
 make debug  # boot paused, with GDB attached on :1234
 make clean
 ```
+### How to use it
+once it's running, these are the available commands
+
+```sh
+clear #clear the screen
+disk-w "hello" #writes the following text into memory, use left ctrl for ""
+disk-r #reads the written text
+```
+
+that's all for now
 
 ## Project layout
 
